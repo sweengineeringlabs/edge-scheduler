@@ -1,0 +1,57 @@
+[package]
+name         = "swe-edge-runtime-scheduler"
+version      = "0.1.0"
+edition      = "2021"
+license      = "MIT OR Apache-2.0"
+rust-version = "1.95"
+authors      = ["SWE Engineering Labs"]
+repository   = "https://github.com/sweengineeringlabs/edge"
+description  = "edge — async scheduler: runtime-agnostic Scheduler trait plus an optional tokio-backed implementation."
+keywords     = ["scheduler", "runtime", "tokio", "executor", "swe"]
+categories   = ["network-programming", "asynchronous"]
+
+[package.metadata.struct-engine]
+application_type = "lib"
+service_type     = "scheduler"
+
+[lib]
+name = "swe_edge_runtime_scheduler"
+path = "src/lib.rs"
+
+[features]
+# Tokio-backed TokioScheduler + TokioSchedulerConfig. Enabled by default.
+# Disable when bringing a different async runtime.
+default  = ["tokio-rt"]
+tokio-rt = ["dep:tokio", "dep:serde"]
+
+[dependencies]
+swe-edge-runtime = { path = "../runtime", package = "swe-edge-runtime-main" }
+tokio   = { version = "1.0", features = ["rt-multi-thread", "signal", "sync", "time", "macros"], optional = true }
+serde   = { version = "1.0", features = ["derive"], optional = true }
+tracing = "0.1"
+
+[dev-dependencies]
+async-trait = "0.1"
+edge-domain = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.3.4" }
+toml        = "0.8"
+futures     = "0.3"
+
+[[example]]
+name = "custom_scheduler"
+path = "examples/custom_scheduler.rs"
+
+[[test]]
+name = "scheduler_int_test"
+path = "tests/scheduler_int_test.rs"
+
+[[test]]
+name = "validator_int_test"
+path = "tests/validator_int_test.rs"
+
+[[test]]
+name = "application_config_builder_int_test"
+path = "tests/application_config_builder_int_test.rs"
+
+[lints.rust]
+unsafe_code  = "deny"
+missing_docs = "warn"
