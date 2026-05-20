@@ -3,6 +3,7 @@
 mod edge_runtime_scheduler_svc;
 
 pub use crate::api::application_config_builder::ApplicationConfigBuilder;
+pub use crate::api::architecture_config_builder::ArchitectureConfigBuilder;
 #[cfg(feature = "tokio-rt")]
 pub use crate::api::scheduler::TokioSchedulerConfig;
 
