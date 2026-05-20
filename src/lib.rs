@@ -8,7 +8,9 @@
 
 mod api;
 mod core;
-mod gateway;
 mod saf;
 
-pub use gateway::*;
+pub use api::runtime_builder_ext::RuntimeBuilderExt;
+pub use api::scheduler::Scheduler;
+pub use api::traits::Validator;
+pub use saf::*;
