@@ -2333,7 +2333,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "swe-edge-runtime-main"
+name = "swe-edge-runtime-scheduler"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "edge-domain",
+ "futures",
+ "serde",
+ "swe-edge-runtime-server",
+ "tokio",
+ "toml",
+ "tracing",
+]
+
+[[package]]
+name = "swe-edge-runtime-server"
 version = "0.1.0"
 dependencies = [
  "async-trait",
@@ -2353,20 +2367,6 @@ dependencies = [
  "swe-edge-observ-config",
  "swe_justobserv_metrics",
  "thiserror 2.0.18",
- "tokio",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "swe-edge-runtime-scheduler"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "edge-domain",
- "futures",
- "serde",
- "swe-edge-runtime-main",
  "tokio",
  "toml",
  "tracing",

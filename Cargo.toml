@@ -25,7 +25,7 @@ default  = ["tokio-rt"]
 tokio-rt = ["dep:tokio", "dep:serde"]
 
 [dependencies]
-swe-edge-runtime = { path = "../runtime", package = "swe-edge-runtime-main" }
+swe-edge-runtime = { path = "../runtime/main/features/server", package = "swe-edge-runtime-server" }
 tokio   = { version = "1.0", features = ["rt-multi-thread", "signal", "sync", "time", "macros"], optional = true }
 serde   = { version = "1.0", features = ["derive"], optional = true }
 tracing = "0.1"
