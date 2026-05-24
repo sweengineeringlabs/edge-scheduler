@@ -1,5 +1,6 @@
 //! SAF — scheduler public factory surface.
 
+use swe_edge_configbuilder::ConfigBuilder as _;
 use swe_edge_runtime::{RuntimeBuilder, RuntimeResult};
 
 use crate::api::runtime_builder_ext::RuntimeBuilderExt as _;
@@ -10,6 +11,13 @@ use crate::api::traits::Validator;
 use crate::api::scheduler::tokio_scheduler_config::TokioSchedulerConfig;
 #[cfg(feature = "tokio-rt")]
 use crate::core::scheduler::TokioScheduler;
+
+/// Return a [`ConfigBuilder`] pre-seeded with this crate's package name and version.
+pub fn create_config_builder() -> impl swe_edge_configbuilder::ConfigBuilder {
+    swe_edge_configbuilder::create_config_builder()
+        .with_name(env!("CARGO_PKG_NAME"))
+        .with_version(env!("CARGO_PKG_VERSION"))
+}
 
 /// Drive the runtime with a custom [`Scheduler`] implementation.
 pub fn run_with_scheduler<S: Scheduler>(
