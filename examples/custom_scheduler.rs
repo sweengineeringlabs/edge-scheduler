@@ -5,7 +5,7 @@
 use std::future::Future;
 
 use swe_edge_runtime::{Runtime, RuntimeResult};
-use swe_edge_runtime_scheduler::{run_with_scheduler, Scheduler};
+use swe_edge_runtime_scheduler::{Scheduler, SchedulerSvc};
 
 /// A scheduler backed by a single-threaded tokio runtime.
 struct SingleThreadScheduler;
@@ -24,7 +24,7 @@ impl Scheduler for SingleThreadScheduler {
 }
 
 fn main() {
-    let result = run_with_scheduler(
+    let result = SchedulerSvc::run_with_scheduler(
         Runtime::builder().app_name("custom-scheduler-example"),
         SingleThreadScheduler,
     );

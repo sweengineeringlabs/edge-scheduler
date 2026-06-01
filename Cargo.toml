@@ -25,15 +25,15 @@ default  = ["tokio-rt"]
 tokio-rt = ["dep:tokio", "dep:serde"]
 
 [dependencies]
-swe-edge-runtime       = { path = "../runtime/main/features/server", package = "swe-edge-runtime-server" }
+swe-edge-runtime       = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5", package = "swe-edge-runtime-server" }
 tokio                  = { version = "1.0", features = ["rt-multi-thread", "signal", "sync", "time", "macros"], optional = true }
 serde                  = { version = "1.0", features = ["derive"], optional = true }
 tracing                = "0.1"
-swe-edge-configbuilder = { path = "../../configbuilder/main/features/configbuilder" }
+swe-edge-configbuilder = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5" }
 
 [dev-dependencies]
 async-trait = "0.1"
-edge-domain = { path = "../domain" }
+edge-domain = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5" }
 toml        = "0.8"
 futures     = "0.3"
 
@@ -46,13 +46,53 @@ name = "scheduler_int_test"
 path = "tests/scheduler_int_test.rs"
 
 [[test]]
+name = "scheduler_trait_int_test"
+path = "tests/scheduler_trait_int_test.rs"
+
+[[test]]
 name = "validator_int_test"
 path = "tests/validator_int_test.rs"
+
+[[test]]
+name = "validator_trait_int_test"
+path = "tests/validator_trait_int_test.rs"
 
 [[test]]
 name = "application_config_builder_int_test"
 path = "tests/application_config_builder_int_test.rs"
 
+[[test]]
+name = "tokio_scheduler_config_int_test"
+path = "tests/tokio_scheduler_config_int_test.rs"
+
+[[test]]
+name = "runtime_builder_ext_int_test"
+path = "tests/runtime_builder_ext_int_test.rs"
+
+[[test]]
+name = "scheduler_error_int_test"
+path = "tests/scheduler_error_int_test.rs"
+
+[[test]]
+name = "scheduler_svc_int_test"
+path = "tests/scheduler_svc_int_test.rs"
+
+[[test]]
+name = "scheduler_config_validator_int_test"
+path = "tests/scheduler_config_validator_int_test.rs"
+
+[[test]]
+name = "tokio_scheduler_config_builder_int_test"
+path = "tests/tokio_scheduler_config_builder_int_test.rs"
+
+[[test]]
+name = "egress_int_test"
+path = "tests/egress_int_test.rs"
+
 [lints.rust]
 unsafe_code  = "deny"
 missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"

@@ -1,11 +1,11 @@
 //! SAF layer — scheduler public facade.
 
-mod edge_runtime_scheduler_svc;
+mod scheduler_svc;
 
+pub use crate::api::error::SchedulerError;
+pub use crate::api::scheduler::ApplicationConfigBuilder;
+pub use crate::api::types::SchedulerSvc;
 #[cfg(feature = "tokio-rt")]
 pub use crate::api::scheduler::TokioSchedulerConfig;
-
-pub use edge_runtime_scheduler_svc::create_config_builder;
-pub use edge_runtime_scheduler_svc::run_with_scheduler;
 #[cfg(feature = "tokio-rt")]
-pub use edge_runtime_scheduler_svc::{run, run_with_config, tokio_scheduler, validate};
+pub use crate::api::types::TokioScheduler;

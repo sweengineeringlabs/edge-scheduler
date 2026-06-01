@@ -2,16 +2,12 @@
 
 use swe_edge_runtime::{RuntimeBuilder, RuntimeResult};
 
-use crate::api::runtime_builder_ext::RuntimeBuilderExt;
+use crate::api::runtime::RuntimeBuilderExt;
 use crate::api::scheduler::Scheduler;
 #[cfg(feature = "tokio-rt")]
 use crate::api::scheduler::tokio_scheduler_config::TokioSchedulerConfig;
 #[cfg(feature = "tokio-rt")]
-use crate::core::scheduler::TokioScheduler;
-
-/// Primary type for this module (matches filename for Rule 89).
-#[allow(dead_code)]
-pub(crate) struct DefaultRuntimeBuilderExt;
+use crate::api::types::TokioScheduler;
 
 impl RuntimeBuilderExt for RuntimeBuilder {
     fn run_with_scheduler<S: Scheduler>(self, scheduler: S) -> RuntimeResult<()> {

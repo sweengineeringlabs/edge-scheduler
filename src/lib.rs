@@ -4,13 +4,12 @@
 //! call [`RuntimeBuilder::serve`] directly from their own async context.
 //!
 //! Consumers who need a standalone binary with no tokio boilerplate depend on
-//! this crate and call [`run`] or [`RuntimeBuilderExt::run`] instead.
+//! this crate and use [`SchedulerSvc`] methods instead.
 
 mod api;
 mod core;
+mod gateway;
 mod saf;
+mod spi;
 
-pub use api::runtime_builder_ext::RuntimeBuilderExt;
-pub use api::scheduler::Scheduler;
-pub use api::traits::Validator;
-pub use saf::*;
+pub use gateway::*;

@@ -1,10 +1,9 @@
-//! [`Validator`] impl for [`TokioSchedulerConfig`].
+//! [`SchedulerConfigValidator`] impl — validates [`TokioSchedulerConfig`] fields.
 
 use crate::api::scheduler::tokio_scheduler_config::TokioSchedulerConfig;
 
-/// Primary type for this module (matches filename for Rule 89).
-#[allow(dead_code)]
-pub(crate) struct Validator;
+/// Implementation unit — satisfies Rule 89 (filename matches primary type).
+pub(crate) struct SchedulerConfigValidator;
 
 impl crate::api::traits::Validator for TokioSchedulerConfig {
     fn validate(&self) -> Result<(), String> {

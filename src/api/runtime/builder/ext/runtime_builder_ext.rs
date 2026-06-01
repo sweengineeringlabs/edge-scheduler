@@ -26,14 +26,3 @@ pub trait RuntimeBuilderExt {
     #[cfg(feature = "tokio-rt")]
     fn run_with_config(self, config: TokioSchedulerConfig) -> RuntimeResult<()>;
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_runtime_builder_ext_is_object_safe_check() {
-        // Compile-time proof: the trait is well-formed.
-        fn _accepts_trait_object<T: RuntimeBuilderExt>() {}
-    }
-}
