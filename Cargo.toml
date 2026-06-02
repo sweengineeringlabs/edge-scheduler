@@ -1,3 +1,6 @@
+[workspace]
+members = ["."]
+
 [package]
 name         = "swe-edge-runtime-scheduler"
 version      = "0.1.0"
