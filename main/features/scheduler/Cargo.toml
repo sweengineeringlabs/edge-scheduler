@@ -1,0 +1,39 @@
+[package]
+name         = "swe-edge-runtime-scheduler"
+version.workspace     = true
+edition.workspace     = true
+license.workspace     = true
+rust-version.workspace = true
+authors.workspace     = true
+repository.workspace  = true
+description  = "edge — async scheduler: runtime-agnostic Scheduler trait plus an optional tokio-backed implementation."
+keywords     = ["scheduler", "runtime", "tokio", "executor", "swe"]
+categories   = ["network-programming", "asynchronous"]
+
+[package.metadata.struct-engine]
+application_type = "lib"
+service_type     = "scheduler"
+
+[lib]
+name = "swe_edge_runtime_scheduler"
+path = "src/lib.rs"
+
+[features]
+default  = ["tokio-rt"]
+tokio-rt = ["dep:tokio", "dep:serde"]
+
+[dependencies]
+swe-edge-runtime       = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5", package = "swe-edge-runtime-server" }
+tokio                  = { version = "1.0", features = ["rt-multi-thread", "signal", "sync", "time", "macros"], optional = true }
+serde                  = { version = "1.0", features = ["derive"], optional = true }
+tracing                = "0.1"
+swe-edge-configbuilder = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5" }
+
+[dev-dependencies]
+async-trait = "0.1"
+edge-domain = { git = "ssh://git@github.com/sweengineeringlabs/edge.git", tag = "v0.4.5" }
+toml        = "0.8"
+futures     = "0.3"
+
+[lints]
+workspace = true
