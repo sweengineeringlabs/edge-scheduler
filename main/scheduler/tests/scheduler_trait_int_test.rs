@@ -2,20 +2,19 @@
 
 use std::future::Future;
 
-use swe_edge_runtime::{RuntimeError, RuntimeResult};
-use swe_edge_runtime_scheduler::Scheduler;
+use swe_edge_runtime_scheduler::{Scheduler, SchedulerError};
 
 struct OkScheduler;
 
 impl Scheduler for OkScheduler {
-    fn run<F>(&self, fut: F) -> RuntimeResult<()>
+    fn run<F>(&self, fut: F) -> Result<(), SchedulerError>
     where
-        F: Future<Output = RuntimeResult<()>> + Send + 'static,
+        F: Future<Output = Result<(), SchedulerError>> + Send + 'static,
     {
         tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
-            .map_err(|e| RuntimeError::StartFailed(format!("{e}")))?
+            .map_err(|e| SchedulerError::StartFailed(format!("{e}")))?
             .block_on(fut)
     }
 }
@@ -31,6 +30,6 @@ fn test_scheduler_trait_run_succeeds_with_ok_future() {
 #[test]
 fn test_scheduler_trait_run_propagates_error_from_future() {
     let s = OkScheduler;
-    let result = s.run(async { Err(RuntimeError::StartFailed("x".into())) });
+    let result = s.run(async { Err(SchedulerError::StartFailed("x".into())) });
     assert!(result.is_err());
 }

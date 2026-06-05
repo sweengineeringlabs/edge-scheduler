@@ -8,21 +8,20 @@
 
 use std::future::Future;
 
-use swe_edge_runtime::{Runtime, RuntimeError, RuntimeResult};
-use swe_edge_runtime_scheduler::{Scheduler, SchedulerSvc};
+use swe_edge_runtime_scheduler::{Scheduler, SchedulerError};
 
 /// A minimal [`Scheduler`] implementation used to verify the SPI extension pattern.
 struct StubScheduler;
 
 impl Scheduler for StubScheduler {
-    fn run<F>(&self, fut: F) -> RuntimeResult<()>
+    fn run<F>(&self, fut: F) -> Result<(), SchedulerError>
     where
-        F: Future<Output = RuntimeResult<()>> + Send + 'static,
+        F: Future<Output = Result<(), SchedulerError>> + Send + 'static,
     {
         tokio::runtime::Builder::new_current_thread()
             .enable_all()
             .build()
-            .map_err(|e| RuntimeError::StartFailed(e.to_string()))?
+            .map_err(|e| SchedulerError::StartFailed(e.to_string()))?
             .block_on(fut)
     }
 }
@@ -30,14 +29,6 @@ impl Scheduler for StubScheduler {
 /// @covers: spi/egress — downstream extension via custom Scheduler
 #[test]
 fn test_egress_spi_custom_scheduler_runs_future_successfully() {
-    // Prove that a downstream-provided Scheduler impl is accepted by the SAF.
     let result = StubScheduler.run(async { Ok(()) });
     assert!(result.is_ok());
-}
-
-/// @covers: spi/egress — custom Scheduler passed to SchedulerSvc
-#[test]
-fn test_egress_spi_scheduler_svc_accepts_custom_impl() {
-    let result = SchedulerSvc::run_with_scheduler(Runtime::builder(), StubScheduler);
-    assert!(matches!(result, Err(RuntimeError::StartFailed(_))));
 }

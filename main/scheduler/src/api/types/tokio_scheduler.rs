@@ -3,8 +3,7 @@
 use std::future::Future;
 use std::sync::OnceLock;
 
-use swe_edge_runtime::{RuntimeError, RuntimeResult};
-
+use crate::api::error::SchedulerError;
 use crate::api::scheduler::tokio_scheduler_config::TokioSchedulerConfig;
 use crate::api::scheduler::Scheduler;
 
@@ -43,9 +42,9 @@ impl TokioScheduler {
 }
 
 impl Scheduler for TokioScheduler {
-    fn run<F>(&self, fut: F) -> RuntimeResult<()>
+    fn run<F>(&self, fut: F) -> Result<(), SchedulerError>
     where
-        F: Future<Output = RuntimeResult<()>> + Send + 'static,
+        F: Future<Output = Result<(), SchedulerError>> + Send + 'static,
     {
         Self::install_panic_hook();
 
@@ -65,7 +64,7 @@ impl Scheduler for TokioScheduler {
 
         let rt = builder
             .build()
-            .map_err(|e| RuntimeError::StartFailed(format!("scheduler: {e}")))?;
+            .map_err(|e| SchedulerError::StartFailed(format!("scheduler: {e}")))?;
 
         rt.block_on(fut)
     }

@@ -5,7 +5,6 @@
 pub(crate) mod egress;
 pub(crate) mod ingress;
 
-pub use crate::api::runtime::RuntimeBuilderExt;
 pub use crate::api::scheduler::Scheduler;
 pub use crate::api::traits::Validator;
 pub use crate::saf::*;
