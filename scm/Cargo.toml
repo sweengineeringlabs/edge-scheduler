@@ -1,11 +1,11 @@
 [package]
 name         = "swe-edge-runtime-scheduler"
-version.workspace     = true
-edition.workspace     = true
-license.workspace     = true
-rust-version.workspace = true
-authors.workspace     = true
-repository.workspace  = true
+version      = "0.1.0"
+edition      = "2021"
+license      = "MIT OR Apache-2.0"
+rust-version = "1.95"
+authors      = ["SWE Engineering Labs"]
+repository   = "https://github.com/sweengineeringlabs/edge"
 description  = "edge — async scheduler: runtime-agnostic Scheduler trait plus an optional tokio-backed implementation."
 keywords     = ["scheduler", "runtime", "tokio", "executor", "swe"]
 categories   = ["network-programming", "asynchronous"]
@@ -16,7 +16,7 @@ service_type     = "scheduler"
 
 [lib]
 name = "swe_edge_runtime_scheduler"
-path = "src/lib.rs"
+path = "main/src/lib.rs"
 
 [features]
 default  = ["tokio-rt"]
@@ -34,5 +34,10 @@ edge-domain = { git = "https://github.com/sweengineeringlabs/edge-domain.git", t
 toml        = "0.8"
 futures     = "0.3"
 
-[lints]
-workspace = true
+[lints.rust]
+unsafe_code  = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
