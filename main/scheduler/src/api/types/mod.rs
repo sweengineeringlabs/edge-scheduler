@@ -1,9 +1,7 @@
 //! Public types for `swe-edge-runtime-scheduler`.
 
+pub use application_config_builder::ApplicationConfigBuilder;
 pub use scheduler_svc::SchedulerSvc;
-#[cfg(feature = "tokio-rt")]
-pub use tokio_scheduler::TokioScheduler;
 
+pub mod application_config_builder;
 pub mod scheduler_svc;
-#[cfg(feature = "tokio-rt")]
-pub mod tokio_scheduler;

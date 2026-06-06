@@ -6,9 +6,9 @@ use crate::api::error::SchedulerError;
 
 /// Drives an async future to completion on the caller's chosen async runtime.
 ///
-/// Implement this trait to plug in any runtime — tokio, async-std, smol, or a
-/// custom executor.  The crate ships a ready-made tokio implementation behind
-/// the `tokio-rt` feature (enabled by default).
+/// Implement this trait to plug in any async executor — a custom runtime, or
+/// any third-party executor.  The crate ships a ready-made implementation
+/// behind its default feature; alternative backends are added under `spi/`.
 pub trait Scheduler {
     /// Block the calling thread until `fut` completes and return its result.
     fn run<F>(&self, fut: F) -> Result<(), SchedulerError>

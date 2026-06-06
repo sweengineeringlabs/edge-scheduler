@@ -1,6 +1,7 @@
-//! SPI (Service Provider Interface) — extension hooks for downstream consumers.
+//! SPI layer — implementations of `api/` contracts backed by external libraries.
 //!
-//! Implement the traits in this module to plug a custom async runtime into the
-//! scheduler crate without forking the crate itself.
-
-pub mod egress;
+//! Downstream consumers may add a sibling `spi/{technology}/` directory plus a
+//! `saf/` factory arm to plug a non-tokio async executor without forking the
+//! crate.
+#[cfg(feature = "tokio-rt")]
+pub(crate) mod tokio;

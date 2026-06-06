@@ -4,8 +4,8 @@ use std::future::Future;
 use std::sync::OnceLock;
 
 use crate::api::error::SchedulerError;
-use crate::api::scheduler::tokio_scheduler_config::TokioSchedulerConfig;
-use crate::api::scheduler::Scheduler;
+use crate::api::traits::Scheduler;
+use crate::spi::tokio::tokio_scheduler_config::TokioSchedulerConfig;
 
 /// Tokio-backed async scheduler.
 ///
@@ -48,7 +48,7 @@ impl Scheduler for TokioScheduler {
     {
         Self::install_panic_hook();
 
-        let mut builder = tokio::runtime::Builder::new_multi_thread();
+        let mut builder = ::tokio::runtime::Builder::new_multi_thread();
         builder.enable_all();
         builder.thread_name(&self.thread_name);
 

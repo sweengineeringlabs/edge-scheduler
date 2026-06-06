@@ -1,13 +1,13 @@
 //! SAF — scheduler factory methods on [`SchedulerSvc`].
 
 #[cfg(feature = "tokio-rt")]
-use crate::api::scheduler::tokio_scheduler_config::TokioSchedulerConfig;
-use crate::api::scheduler::ApplicationConfigBuilder;
-#[cfg(feature = "tokio-rt")]
 use crate::api::traits::Validator;
+use crate::api::types::ApplicationConfigBuilder;
 use crate::api::types::SchedulerSvc;
 #[cfg(feature = "tokio-rt")]
-use crate::api::types::TokioScheduler;
+use crate::spi::tokio::tokio_scheduler_config::TokioSchedulerConfig;
+#[cfg(feature = "tokio-rt")]
+use crate::spi::tokio::TokioScheduler;
 
 impl SchedulerSvc {
     /// Return an [`ApplicationConfigBuilder`] pre-seeded with this crate's package name and version.
