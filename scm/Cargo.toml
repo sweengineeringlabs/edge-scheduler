@@ -1,6 +1,6 @@
 [package]
 name         = "swe-edge-runtime-scheduler"
-version      = "0.3.0"
+version      = "0.3.1"
 edition      = "2021"
 license      = "MIT OR Apache-2.0"
 rust-version = "1.95"
@@ -30,7 +30,7 @@ swe-edge-configbuilder = { git = "https://github.com/sweengineeringlabs/edge-con
 
 [dev-dependencies]
 async-trait = "0.1"
-edge-domain = { git = "https://github.com/sweengineeringlabs/edge-domain.git", tag = "v0.1.0" }
+edge-domain = { git = "https://github.com/sweengineeringlabs/edge-domain.git", tag = "v0.8.0" }
 toml        = "0.8"
 futures     = "0.3"
 
