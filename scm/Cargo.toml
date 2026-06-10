@@ -23,7 +23,7 @@ default  = ["tokio-rt"]
 tokio-rt = ["dep:tokio", "dep:serde"]
 
 [dependencies]
-tokio                  = { version = "1.0", features = ["rt-multi-thread", "signal", "sync", "time", "macros"], optional = true }
+tokio                  = { version = "1.52", features = ["rt-multi-thread", "signal", "sync", "time", "macros"], optional = true }
 serde                  = { version = "1.0", features = ["derive"], optional = true }
 tracing                = "0.1"
 swe-edge-configbuilder = { git = "https://github.com/sweengineeringlabs/edge-configbuilder.git", tag = "v0.1.0" }
