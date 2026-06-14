@@ -2,47 +2,50 @@
 
 use std::num::NonZeroUsize;
 
-use super::tokio_scheduler_config::TokioSchedulerConfig;
+use crate::api::types::tokio_scheduler_config::TokioSchedulerConfig;
 
 /// Fluent builder for [`TokioSchedulerConfig`].
+///
+/// All setter methods are chainable. Call [`build`](Self::build) to produce the
+/// finished [`TokioSchedulerConfig`].
 pub struct TokioSchedulerConfigBuilder {
-    inner: TokioSchedulerConfig,
+    pub(crate) inner: TokioSchedulerConfig,
 }
 
 impl TokioSchedulerConfigBuilder {
-    /// Create a new builder with all fields unset (defaults).
-    pub(crate) fn new() -> Self {
+    /// Create a new builder with all fields unset (tokio defaults).
+    pub fn new() -> Self {
         Self {
             inner: TokioSchedulerConfig::default(),
         }
     }
 
     /// Set the number of worker threads.
-    pub(crate) fn workers(mut self, n: NonZeroUsize) -> Self {
+    pub fn workers(mut self, n: NonZeroUsize) -> Self {
         self.inner.workers = Some(n);
         self
     }
 
     /// Set the stack size per worker thread in KiB.
-    pub(crate) fn thread_stack_kib(mut self, kib: usize) -> Self {
+    pub fn thread_stack_kib(mut self, kib: usize) -> Self {
         self.inner.thread_stack_kib = Some(kib);
         self
     }
 
     /// Set the maximum number of threads in the blocking pool.
-    pub(crate) fn max_blocking_threads(mut self, n: usize) -> Self {
+    pub fn max_blocking_threads(mut self, n: usize) -> Self {
         self.inner.max_blocking_threads = Some(n);
         self
     }
 
     /// Set the worker thread name prefix.
-    pub(crate) fn thread_name(mut self, name: impl Into<String>) -> Self {
+    pub fn thread_name(mut self, name: impl Into<String>) -> Self {
         self.inner.thread_name = Some(name.into());
         self
     }
 
     /// Consume the builder and return the configured [`TokioSchedulerConfig`].
-    pub(crate) fn build(self) -> TokioSchedulerConfig {
+    pub fn build(self) -> TokioSchedulerConfig {
         self.inner
     }
 }

@@ -2,33 +2,62 @@
 
 use std::num::NonZeroUsize;
 
-use swe_edge_runtime_scheduler::{SchedulerSvc, TokioSchedulerConfig};
+use swe_edge_runtime_scheduler::{
+    Scheduler, SchedulerSvc, TokioSchedulerConfig, TokioSchedulerConfigBuilder,
+};
 
 /// @covers: TokioSchedulerConfigBuilder::new
 #[test]
-fn test_tokio_scheduler_config_builder_struct_new_produces_valid_scheduler() {
-    // Build a config via the builder and use it with the scheduler factory.
-    // The scheduler factory accepts it without panicking — proof the builder works.
-    let scheduler = SchedulerSvc::tokio_scheduler(TokioSchedulerConfig::default(), "test");
-    assert!(swe_edge_runtime_scheduler::Scheduler::run(&scheduler, async { Ok(()) }).is_ok());
-}
-
-/// @covers: TokioSchedulerConfigBuilder
-#[test]
-fn test_tokio_scheduler_config_builder_struct_default_config_has_none_fields() {
-    let cfg = TokioSchedulerConfig::default();
+fn test_tokio_scheduler_config_builder_struct_new_produces_default_config() {
+    let cfg = TokioSchedulerConfigBuilder::new().build();
     assert!(cfg.workers.is_none());
     assert!(cfg.thread_stack_kib.is_none());
     assert!(cfg.max_blocking_threads.is_none());
     assert!(cfg.thread_name.is_none());
 }
 
-/// @covers: TokioSchedulerConfigBuilder
+/// @covers: TokioSchedulerConfigBuilder::workers
 #[test]
-fn test_tokio_scheduler_config_builder_struct_workers_field_is_set() {
-    let cfg = TokioSchedulerConfig {
-        workers: NonZeroUsize::new(4),
-        ..Default::default()
+fn test_tokio_scheduler_config_builder_struct_workers_sets_worker_count() {
+    const FOUR: NonZeroUsize = match NonZeroUsize::new(4) {
+        Some(n) => n,
+        None => panic!("4 is nonzero"),
     };
+    let cfg = TokioSchedulerConfigBuilder::new().workers(FOUR).build();
     assert_eq!(cfg.workers.map(|n| n.get()), Some(4));
+}
+
+/// @covers: TokioSchedulerConfigBuilder::thread_stack_kib
+#[test]
+fn test_tokio_scheduler_config_builder_struct_thread_stack_kib_sets_stack_size() {
+    let cfg = TokioSchedulerConfigBuilder::new()
+        .thread_stack_kib(256)
+        .build();
+    assert_eq!(cfg.thread_stack_kib, Some(256));
+}
+
+/// @covers: TokioSchedulerConfigBuilder::max_blocking_threads
+#[test]
+fn test_tokio_scheduler_config_builder_struct_max_blocking_threads_sets_pool() {
+    let cfg = TokioSchedulerConfigBuilder::new()
+        .max_blocking_threads(64)
+        .build();
+    assert_eq!(cfg.max_blocking_threads, Some(64));
+}
+
+/// @covers: TokioSchedulerConfigBuilder::thread_name
+#[test]
+fn test_tokio_scheduler_config_builder_struct_thread_name_sets_name() {
+    let cfg = TokioSchedulerConfigBuilder::new()
+        .thread_name("worker")
+        .build();
+    assert_eq!(cfg.thread_name.as_deref(), Some("worker"));
+}
+
+/// @covers: TokioSchedulerConfigBuilder::build
+#[test]
+fn test_tokio_scheduler_config_builder_struct_build_produces_working_scheduler() {
+    let cfg: TokioSchedulerConfig = TokioSchedulerConfigBuilder::new().build();
+    let s = SchedulerSvc::tokio_scheduler(cfg, "test");
+    assert!(s.run(async { Ok(()) }).is_ok());
 }

@@ -2,9 +2,11 @@
 
 use swe_edge_runtime_scheduler::Validator;
 
+// ── Validator::validate ───────────────────────────────────────────────────────
+
 /// @covers: Validator::validate
 #[test]
-fn test_validator_trait_validate_ok_path() {
+fn test_validate_accepts_valid_impl_happy() {
     struct AlwaysValid;
     impl Validator for AlwaysValid {
         fn validate(&self) -> Result<(), String> {
@@ -16,12 +18,29 @@ fn test_validator_trait_validate_ok_path() {
 
 /// @covers: Validator::validate
 #[test]
-fn test_validator_trait_validate_err_path() {
+fn test_validate_returns_descriptive_message_on_failure_error() {
     struct AlwaysInvalid;
     impl Validator for AlwaysInvalid {
         fn validate(&self) -> Result<(), String> {
-            Err("invalid".into())
+            Err("value is invalid".into())
         }
     }
-    assert!(AlwaysInvalid.validate().is_err());
+    match AlwaysInvalid.validate() {
+        Ok(_) => panic!("expected AlwaysInvalid to return Err"),
+        Err(msg) => assert!(!msg.is_empty()),
+    }
+}
+
+/// @covers: Validator::validate
+#[test]
+fn test_validate_is_deterministic_on_repeated_calls_edge() {
+    struct AlwaysValid;
+    impl Validator for AlwaysValid {
+        fn validate(&self) -> Result<(), String> {
+            Ok(())
+        }
+    }
+    let v = AlwaysValid;
+    assert!(v.validate().is_ok());
+    assert!(v.validate().is_ok());
 }

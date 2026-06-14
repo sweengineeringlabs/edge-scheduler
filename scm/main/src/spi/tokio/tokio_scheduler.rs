@@ -1,24 +1,22 @@
-//! [`TokioScheduler`] — public-facing tokio-backed [`Scheduler`] type.
+//! Tokio-backed [`Scheduler`](crate::api::traits::Scheduler) implementation.
 
 use std::future::Future;
 use std::sync::OnceLock;
 
 use crate::api::error::SchedulerError;
-use crate::api::traits::Scheduler;
-use crate::spi::tokio::tokio_scheduler_config::TokioSchedulerConfig;
+use crate::api::traits::{Configurable, Scheduler};
+use crate::api::types::application_config_builder::ApplicationConfigBuilder;
+use crate::api::types::scheduler_svc::SchedulerSvc;
+use crate::api::types::tokio_scheduler_config::TokioSchedulerConfig;
+use crate::api::types::tokio_scheduler_config_builder::TokioSchedulerConfigBuilder;
 
-/// Tokio-backed async scheduler.
-///
-/// Construct via [`crate::SchedulerSvc::tokio_scheduler`].  Pass the result to
-/// [`crate::SchedulerSvc::run_with_scheduler`] to drive the runtime.
-pub struct TokioScheduler {
+pub(crate) struct TokioScheduler {
     config: TokioSchedulerConfig,
     thread_name: String,
 }
 
 impl TokioScheduler {
-    /// Create a new tokio scheduler with the given config and thread name prefix.
-    pub fn new(config: TokioSchedulerConfig, thread_name: impl Into<String>) -> Self {
+    pub(crate) fn new(config: TokioSchedulerConfig, thread_name: impl Into<String>) -> Self {
         let thread_name = config
             .thread_name
             .clone()
@@ -67,5 +65,45 @@ impl Scheduler for TokioScheduler {
             .map_err(|e| SchedulerError::StartFailed(format!("scheduler: {e}")))?;
 
         rt.block_on(fut)
+    }
+}
+
+impl Configurable for TokioScheduler {
+    fn config_builder() -> ApplicationConfigBuilder {
+        ApplicationConfigBuilder::new()
+    }
+
+    fn service() -> SchedulerSvc {
+        SchedulerSvc
+    }
+
+    fn default_tokio_config() -> TokioSchedulerConfig {
+        TokioSchedulerConfig::default()
+    }
+
+    fn tokio_config_builder() -> TokioSchedulerConfigBuilder {
+        TokioSchedulerConfigBuilder::new()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new_uses_config_thread_name_when_set() {
+        let config = TokioSchedulerConfig {
+            thread_name: Some("from-config".to_string()),
+            ..Default::default()
+        };
+        let s = TokioScheduler::new(config, "from-param");
+        assert_eq!(s.thread_name, "from-config");
+    }
+
+    #[test]
+    fn test_new_uses_param_thread_name_when_config_has_none() {
+        let config = TokioSchedulerConfig::default();
+        let s = TokioScheduler::new(config, "from-param");
+        assert_eq!(s.thread_name, "from-param");
     }
 }

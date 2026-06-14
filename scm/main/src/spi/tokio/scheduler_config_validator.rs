@@ -1,6 +1,6 @@
 //! [`SchedulerConfigValidator`] impl — validates [`TokioSchedulerConfig`] fields.
 
-use crate::spi::tokio::tokio_scheduler_config::TokioSchedulerConfig;
+use crate::api::types::tokio_scheduler_config::TokioSchedulerConfig;
 
 /// Implementation unit — satisfies Rule 89 (filename matches primary type).
 #[expect(

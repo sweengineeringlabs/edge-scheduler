@@ -19,17 +19,26 @@ impl Scheduler for OkScheduler {
     }
 }
 
+// ── Scheduler::run ────────────────────────────────────────────────────────────
+
 /// @covers: Scheduler::run
 #[test]
-fn test_scheduler_trait_run_succeeds_with_ok_future() {
+fn test_run_drives_ok_future_to_completion_happy() {
     let s = OkScheduler;
     assert!(s.run(async { Ok(()) }).is_ok());
 }
 
 /// @covers: Scheduler::run
 #[test]
-fn test_scheduler_trait_run_propagates_error_from_future() {
+fn test_run_returns_err_when_future_yields_error_error() {
     let s = OkScheduler;
     let result = s.run(async { Err(SchedulerError::StartFailed("x".into())) });
     assert!(result.is_err());
+}
+
+/// @covers: Scheduler::run
+#[test]
+fn test_run_accepts_immediately_resolving_future_edge() {
+    let s = OkScheduler;
+    assert!(s.run(std::future::ready(Ok(()))).is_ok());
 }

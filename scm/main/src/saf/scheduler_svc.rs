@@ -1,13 +1,15 @@
 //! SAF — scheduler factory methods on [`SchedulerSvc`].
 
+pub use crate::api::error::SchedulerError;
+pub use crate::api::types::ApplicationConfigBuilder;
+pub use crate::api::types::SchedulerSvc;
+
 #[cfg(feature = "tokio-rt")]
 use crate::api::traits::Validator;
-use crate::api::types::ApplicationConfigBuilder;
-use crate::api::types::SchedulerSvc;
 #[cfg(feature = "tokio-rt")]
-use crate::spi::tokio::tokio_scheduler_config::TokioSchedulerConfig;
+use crate::api::types::tokio_scheduler_config::TokioSchedulerConfig;
 #[cfg(feature = "tokio-rt")]
-use crate::spi::tokio::TokioScheduler;
+use crate::spi::tokio::tokio_scheduler::TokioScheduler;
 
 impl SchedulerSvc {
     /// Return an [`ApplicationConfigBuilder`] pre-seeded with this crate's package name and version.
@@ -23,14 +25,15 @@ impl SchedulerSvc {
         v.validate()
     }
 
-    /// Construct a tokio-backed [`TokioScheduler`] with the given config and thread name prefix.
+    /// Construct a tokio-backed scheduler with the given config and thread name prefix.
     ///
+    /// Returns `impl Scheduler` — callers depend on the trait, not the concrete type.
     /// Requires the `tokio-rt` feature (enabled by default).
     #[cfg(feature = "tokio-rt")]
     pub fn tokio_scheduler(
         config: TokioSchedulerConfig,
         thread_name: impl Into<String>,
-    ) -> TokioScheduler {
+    ) -> impl crate::api::traits::Scheduler {
         TokioScheduler::new(config, thread_name)
     }
 }
