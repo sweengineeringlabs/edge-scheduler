@@ -2,7 +2,7 @@
 //!
 //! Maps to `config/application.toml` per SEA Rule 170.
 
-use swe_edge_configbuilder::ConfigBuilderImpl;
+use configbuilder::{ConfigBuilder, ConfigBuilderImpl};
 
 /// Fluent builder for the scheduler application configuration.
 ///
@@ -23,7 +23,7 @@ impl ApplicationConfigBuilder {
     /// Create a new builder pre-seeded with the crate's package name and version.
     pub fn new() -> Self {
         Self {
-            inner: swe_edge_configbuilder::ConfigLoaderFactory::create_config_builder()
+            inner: configbuilder::ConfigLoaderFactory::create_config_builder()
                 .with_name(env!("CARGO_PKG_NAME"))
                 .with_version(env!("CARGO_PKG_VERSION")),
         }
