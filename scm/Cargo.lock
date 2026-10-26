@@ -35,6 +35,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
+name = "configbuilder"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0292bd976e2da46d78c4ca712836abb7cab9a60f683c07399c2f40c766918a7b"
+dependencies = [
+ "dirs",
+ "regex",
+ "serde",
+ "thiserror 2.0.18",
+ "toml",
+]
+
+[[package]]
 name = "dirs"
 version = "5.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -569,26 +582,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 
 [[package]]
-name = "swe-edge-configbuilder"
-version = "0.1.0"
-source = "git+https://github.com/sweengineeringlabs/edge-configbuilder.git?tag=v0.1.0#842429c1fd3d95255940d6dbd5da17c14c37f8a8"
-dependencies = [
- "dirs",
- "regex",
- "serde",
- "thiserror 2.0.18",
- "toml",
-]
-
-[[package]]
 name = "swe-edge-runtime-scheduler"
 version = "0.3.4"
 dependencies = [
  "async-trait",
+ "configbuilder",
  "edge-domain",
  "futures",
  "serde",
- "swe-edge-configbuilder",
  "tokio",
  "toml",
  "tracing",

@@ -1,9 +1,9 @@
 //! Integration tests for [`SchedulerSvc::create_config_builder`] — also covers the
-//! `swe-edge-configbuilder` dependency (SEA Rule 95).
+//! `configbuilder` dependency (SEA Rule 95).
 
 #![allow(clippy::unwrap_used, clippy::expect_used)]
 
-use swe_edge_configbuilder::ConfigBuilderImpl;
+use configbuilder::ConfigBuilderImpl;
 use swe_edge_runtime_scheduler::{ApplicationConfigBuilder, SchedulerSvc};
 
 /// @covers: SchedulerSvc::create_config_builder
